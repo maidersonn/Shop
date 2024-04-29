@@ -15,12 +15,10 @@ public class ArticleBuilderTest {
                 .withType("pantalon")
                 .withMaterial("vaquero")
                 .withSize(38)
-                .withPrice(80)
-                .withId(1L);
+                .withPrice(80);
         Article article = builder.build();
-        assertEquals(1L, article.getId());
         assertEquals("pantalon", article.getType());
-        assertEquals(38, article.getSize());
+        assertEquals(38, article.getSize_());
         assertEquals("vaquero", article.getMaterial());
         assertEquals("Lewis", article.getBrand());
         assertEquals(80, article.getPrice());

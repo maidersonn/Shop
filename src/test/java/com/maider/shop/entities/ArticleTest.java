@@ -15,10 +15,9 @@ class ArticleTest {
     }
     @Test
     public void itCreatesArticleWithProperties () {
-        Article articulo = new Article(1L,"pantalon", 38, "algodon", "Batela", 10.5);
-        assertEquals(1L, articulo.getId());
+        Article articulo = new Article("pantalon", 38, "algodon", "Batela", 10.5);
         assertEquals("pantalon", articulo.getType());
-        assertEquals(38, articulo.getSize());
+        assertEquals(38, articulo.getSize_());
         assertEquals("algodon", articulo.getMaterial());
         assertEquals("Batela", articulo.getBrand());
         assertEquals(10.5, articulo.getPrice());

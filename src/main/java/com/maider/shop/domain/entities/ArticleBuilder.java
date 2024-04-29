@@ -3,16 +3,12 @@ package com.maider.shop.domain.entities;
 import java.util.ArrayList;
 
 public class ArticleBuilder {
-    private Long id;
     private String type;
     private int size;
     private String material;
     private String brand;
     private double price;
-    public ArticleBuilder withId (Long id) {
-        this.id = id;
-        return this;
-    }
+
     public ArticleBuilder withType (String type) {
         this.type = type;
         return this;
@@ -34,6 +30,6 @@ public class ArticleBuilder {
         return this;
     }
     public Article build () {
-        return new Article(this.id, this.type, this.size, this.material, this.brand, this.price);
+        return new Article(this.type, this.size, this.material, this.brand, this.price);
     }
 }

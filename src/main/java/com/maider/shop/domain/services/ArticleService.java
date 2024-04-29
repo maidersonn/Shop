@@ -5,6 +5,7 @@ import com.maider.shop.domain.repositories.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,5 +20,8 @@ public class ArticleService {
 
     public Article save(Article article) {
         return articleRepository.save(article);
+    }
+    public List<Article> getAll() {
+        return articleRepository.findAll();
     }
 }
