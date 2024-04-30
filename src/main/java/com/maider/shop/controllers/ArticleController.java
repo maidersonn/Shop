@@ -5,6 +5,7 @@ import com.maider.shop.domain.services.ArticleService;
 import com.maider.shop.controllers.dto.ArticleDTO;
 import com.maider.shop.controllers.dto.ArticleCreationDTO;
 import com.maider.shop.controllers.mapper.ArticleMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,13 @@ public class ArticleController {
     }
     @PostMapping("/article")
     @ResponseBody
-    public ArticleDTO create(@RequestBody ArticleCreationDTO articleDTO) {
+    public ArticleDTO create(@RequestBody @Valid ArticleCreationDTO articleDTO) {
         Article newArticle = mapper.toArticle(articleDTO);
         Article article = articleService.save(newArticle);
         return mapper.toDto(article);
+    }
+    @DeleteMapping("/article/{id}")
+    public void delete(@PathVariable Long id) {
+
     }
 }

@@ -1,6 +1,4 @@
-package security;
-
-import security.Result;
+package com.maider.shop.domain.security;
 
 public class Success<V,E> implements Result<V,E> {
 

@@ -1,10 +1,17 @@
 package com.maider.shop.controllers.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class ArticleCreationDTO {
+    @NotBlank
     private String type;
+    @NotBlank
     private String material;
+    @NotBlank
     private String brand;
+    @NotBlank
     private int size;
+    @NotBlank
     private double price;
 
     public ArticleCreationDTO(String type, String material, String brand, int size, double price) {
