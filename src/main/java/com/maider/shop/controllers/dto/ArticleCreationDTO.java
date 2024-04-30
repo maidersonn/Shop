@@ -1,6 +1,11 @@
 package com.maider.shop.controllers.dto;
 
+
+import ch.qos.logback.core.model.INamedModel;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class ArticleCreationDTO {
     @NotBlank
@@ -9,12 +14,14 @@ public class ArticleCreationDTO {
     private String material;
     @NotBlank
     private String brand;
-    @NotBlank
-    private int size;
-    @NotBlank
-    private double price;
+    @NotNull
+    @Min(value=0)
+    private Integer size;
+    @NotNull
+    @Min(value=0)
+    private Double price;
 
-    public ArticleCreationDTO(String type, String material, String brand, int size, double price) {
+    public ArticleCreationDTO(String type, String material, String brand, Integer size, Double price) {
         this.type = type;
         this.material = material;
         this.brand = brand;
@@ -34,11 +41,11 @@ public class ArticleCreationDTO {
         return brand;
     }
 
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 }

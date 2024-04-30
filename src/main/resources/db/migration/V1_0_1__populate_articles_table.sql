@@ -19,5 +19,3 @@ VALUES
     ('T-Shirt', 40, 'elastane', 'Lewis', 35),
     ('T-Shirt', 41, 'elastane', 'Lewis', 35),
     ('T-Shirt', 41, 'elastane', 'Moon', 20);
-
-
