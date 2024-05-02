@@ -38,4 +38,13 @@ public class ArticleService {
             return new Failure<>("Error retrieving articles");
         }
     }
+
+    public Result<Boolean, String> deleteById(Long id) {
+        try {
+            articleRepository.deleteById(id);
+            return new Success<>(true);
+        } catch (Exception e) {
+            return new Failure<>("Error deleting article");
+        }
+    }
 }

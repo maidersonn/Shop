@@ -9,7 +9,7 @@ import com.maider.shop.controllers.dto.ArticleCreationDTO;
 import com.maider.shop.controllers.mapper.ArticleMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +30,8 @@ public class ArticleController {
         if(articles instanceof Success<?,?>) {
             List<Article> articlesList = articles.getValue();
             List<ArticleDTO> articleDTOList = articlesList.stream().map(article -> mapper.toDto(article)).toList();
-            return new ResponseEntity<>(articleDTOList,  HttpStatusCode.valueOf(200));
-        } else return new ResponseEntity<>(articles.getError(), HttpStatusCode.valueOf(500));
+            return new ResponseEntity<>(articleDTOList,  HttpStatus.OK);
+        } else return new ResponseEntity<>(articles.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @PostMapping("/article")
     @ResponseBody
@@ -40,11 +40,14 @@ public class ArticleController {
         Result<Article, String> article = articleService.save(newArticle);
         if (article instanceof Success<Article, String>) {
             ArticleDTO newArticleDTO = mapper.toDto(article.getValue());
-            return new ResponseEntity<>(newArticleDTO, HttpStatusCode.valueOf(200));
-        } else return new ResponseEntity<>(article.getError(), HttpStatusCode.valueOf(500));
+            return new ResponseEntity<>(newArticleDTO, HttpStatus.CREATED);
+        } else return new ResponseEntity<>(article.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @DeleteMapping("/article/{id}")
-    public void delete(@PathVariable Long id) {
-
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        Result<Boolean, String> deleteResponse = articleService.deleteById(id);
+        if (deleteResponse instanceof Success<Boolean, String>) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(deleteResponse.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
