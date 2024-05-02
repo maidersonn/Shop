@@ -2,6 +2,9 @@ package com.maider.shop.domain.services;
 
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.repositories.ArticleRepository;
+import com.maider.shop.domain.security.Failure;
+import com.maider.shop.domain.security.Result;
+import com.maider.shop.domain.security.Success;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +21,21 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article save(Article article) {
-        return articleRepository.save(article);
+    public Result<Article, String> save(Article article) {
+       try {
+           Article newArticle = articleRepository.save(article);
+           return new Success<>(newArticle);
+       } catch (Exception e) {
+           return new Failure<>("Error relationed with database");
+       }
+
     }
-    public List<Article> getAll() {
-        return articleRepository.findAll();
+    public Result<List<Article>, String> getAll() {
+        try {
+            List<Article> articles = articleRepository.findAll();
+            return new Success<>(articles);
+        } catch (Exception e) {
+            return new Failure<>("Error retrieving articles");
+        }
     }
 }

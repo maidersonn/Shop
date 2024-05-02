@@ -1,13 +1,11 @@
 package com.maider.shop.controllers.dto;
 
-
-import ch.qos.logback.core.model.INamedModel;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class ArticleCreationDTO {
+
     @NotBlank
     private String type;
     @NotBlank
