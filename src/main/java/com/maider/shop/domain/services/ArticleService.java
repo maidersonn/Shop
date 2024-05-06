@@ -1,5 +1,7 @@
 package com.maider.shop.domain.services;
 
+import com.maider.shop.controllers.dto.ArticleDTO;
+import com.maider.shop.controllers.dto.FilterDTO;
 import com.maider.shop.controllers.spec.ArticleSpecifications;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.repositories.ArticleRepository;
@@ -62,8 +64,29 @@ public class ArticleService {
             return new Failure<>("Error updating article");
         }
     }
-    public List<Article> getFiltered(String type, Integer sizeLessThan, Integer sizeGreaterThan, String material, String brand, Double priceLessThan, Double priceGreaterThan) {
-        ArticleSpecifications spec = new ArticleSpecifications(type,sizeLessThan,sizeGreaterThan, material, brand,priceLessThan,priceGreaterThan);
-        return articleRepository.findAll(spec);
+    public Result<List<Article>, String> getFiltered(FilterDTO filters) {
+        try {
+            ArticleSpecifications spec = new ArticleSpecifications(filters.getType(),
+                                                                    filters.getSizeLessThan(),
+                                                                    filters.getSizeGreaterThan(),
+                                                                    filters.getMaterial(),
+                                                                    filters.getBrand(),
+                                                                    filters.getPriceLessThan(),
+                                                                    filters.getPriceGreaterThan());
+            List<Article> articles = articleRepository.findAll(spec);
+            return new Success<>(articles);
+        } catch (Exception e) {
+            return new Failure<>("Error retrieving filtered articles");
+        }
+
+    }
+
+    public Result<Article, String> getById(Long id) {
+        try {
+            Article article = articleRepository.getReferenceById(id);
+            return new Success<>(article);
+        } catch (Exception e) {
+            return new Failure<>("Error getting article");
+        }
     }
 }
