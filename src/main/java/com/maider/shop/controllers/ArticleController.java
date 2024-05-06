@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 @RestController
@@ -49,5 +51,26 @@ public class ArticleController {
         if (deleteResponse instanceof Success<Boolean, String>) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else return new ResponseEntity<>(deleteResponse.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @PutMapping("/article/{id}")
+    public ResponseEntity<?> update(@RequestBody @Valid ArticleCreationDTO  articleDTO,
+                                    @PathVariable Long id) {
+        Article articleToUpdate = mapper.toArticle(articleDTO);
+        Result<Article, String> updatedArticle = articleService.updateById(id, articleToUpdate);
+        if (updatedArticle instanceof Success<Article, String>) {
+            ArticleDTO updatedArticleDTO = mapper.toDto(updatedArticle.getValue());
+            return new ResponseEntity<>(updatedArticleDTO, HttpStatus.OK);
+        } else return new ResponseEntity<>(updatedArticle.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @GetMapping("/articles/filtered")
+    public List<Article> getFiltered(@RequestParam(required = false) String type,
+                                         @RequestParam(required = false) Integer sizeLessThan,
+                                         @RequestParam(required = false) Integer sizeGreaterThan,
+                                         @RequestParam(required = false) String material,
+                                         @RequestParam(required = false) String brand,
+                                         @RequestParam(required = false) Double priceLessThan,
+                                         @RequestParam(required = false) Double priceGreaterThan) {
+        List<Article> articles = articleService.getFiltered(type,sizeLessThan,sizeGreaterThan, material, brand,priceLessThan,priceGreaterThan);
+        return articles;
     }
 }
