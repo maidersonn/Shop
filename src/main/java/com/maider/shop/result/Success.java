@@ -1,4 +1,4 @@
-package com.maider.shop.domain.security;
+package com.maider.shop.result;
 
 public class Success<V,E> implements Result<V,E> {
 

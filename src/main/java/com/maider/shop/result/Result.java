@@ -1,4 +1,4 @@
-package com.maider.shop.domain.security;
+package com.maider.shop.result;
 
 public interface Result<TValue, TError> {
 

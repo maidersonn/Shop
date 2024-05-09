@@ -1,4 +1,4 @@
-package com.maider.shop.domain.security;
+package com.maider.shop.result;
 
 public class Failure<Nothing, E> implements Result<Nothing, E> {
 

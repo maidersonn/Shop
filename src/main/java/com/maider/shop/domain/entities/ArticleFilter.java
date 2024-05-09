@@ -1,6 +1,6 @@
-package com.maider.shop.controllers.dto;
+package com.maider.shop.domain.entities;
 
-public class FilterDTO {
+public class ArticleFilter {
     private String type;
     private Integer sizeLessThan;
     private Integer sizeGreaterThan;
@@ -9,41 +9,13 @@ public class FilterDTO {
     private Double priceLessThan;
     private Double priceGreaterThan;
 
-    public FilterDTO(String type, Integer sizeLessThan, Integer sizeGreaterThan, String material, String brand, Double priceLessThan, Double priceGreaterThan) {
+    public ArticleFilter(String type, Integer sizeLessThan, Integer sizeGreaterThan, String material, String brand, Double priceLessThan, Double priceGreaterThan) {
         this.type = type;
         this.sizeLessThan = sizeLessThan;
         this.sizeGreaterThan = sizeGreaterThan;
         this.material = material;
         this.brand = brand;
         this.priceLessThan = priceLessThan;
-        this.priceGreaterThan = priceGreaterThan;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setSizeLessThan(Integer sizeLessThan) {
-        this.sizeLessThan = sizeLessThan;
-    }
-
-    public void setSizeGreaterThan(Integer sizeGreaterThan) {
-        this.sizeGreaterThan = sizeGreaterThan;
-    }
-
-    public void setMaterial(String material) {
-        this.material = material;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public void setPriceLessThan(Double priceLessThan) {
-        this.priceLessThan = priceLessThan;
-    }
-
-    public void setPriceGreaterThan(Double priceGreaterThan) {
         this.priceGreaterThan = priceGreaterThan;
     }
 

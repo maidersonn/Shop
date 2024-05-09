@@ -1,20 +1,16 @@
 package com.maider.shop.domain.services;
 
-import com.maider.shop.controllers.dto.ArticleDTO;
 import com.maider.shop.controllers.dto.FilterDTO;
-import com.maider.shop.controllers.spec.ArticleSpecifications;
 import com.maider.shop.domain.entities.Article;
+import com.maider.shop.domain.entities.ArticleFilter;
 import com.maider.shop.domain.repositories.ArticleRepository;
-import com.maider.shop.domain.security.Failure;
-import com.maider.shop.domain.security.Result;
-import com.maider.shop.domain.security.Success;
+import com.maider.shop.result.Failure;
+import com.maider.shop.result.Result;
+import com.maider.shop.result.Success;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ArticleService {
@@ -64,16 +60,9 @@ public class ArticleService {
             return new Failure<>("Error updating article");
         }
     }
-    public Result<List<Article>, String> getFiltered(FilterDTO filters) {
+    public Result<List<Article>, String> getFiltered(ArticleFilter filters) {
         try {
-            ArticleSpecifications spec = new ArticleSpecifications(filters.getType(),
-                                                                    filters.getSizeLessThan(),
-                                                                    filters.getSizeGreaterThan(),
-                                                                    filters.getMaterial(),
-                                                                    filters.getBrand(),
-                                                                    filters.getPriceLessThan(),
-                                                                    filters.getPriceGreaterThan());
-            List<Article> articles = articleRepository.findAll(spec);
+            List<Article> articles = articleRepository.filter(filters);
             return new Success<>(articles);
         } catch (Exception e) {
             return new Failure<>("Error retrieving filtered articles");

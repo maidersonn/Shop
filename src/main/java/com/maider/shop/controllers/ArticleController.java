@@ -1,9 +1,11 @@
 package com.maider.shop.controllers;
 
 import com.maider.shop.controllers.dto.FilterDTO;
+import com.maider.shop.controllers.mapper.ArticleFilterMapper;
 import com.maider.shop.domain.entities.Article;
-import com.maider.shop.domain.security.Result;
-import com.maider.shop.domain.security.Success;
+import com.maider.shop.domain.entities.ArticleFilter;
+import com.maider.shop.result.Result;
+import com.maider.shop.result.Success;
 import com.maider.shop.domain.services.ArticleService;
 import com.maider.shop.controllers.dto.ArticleDTO;
 import com.maider.shop.controllers.dto.ArticleCreationDTO;
@@ -22,6 +24,8 @@ public class ArticleController {
     private ArticleService articleService;
     @Autowired
     private ArticleMapper mapper;
+    @Autowired
+    private ArticleFilterMapper filterMapper;
 
     @GetMapping("/articles")
     @ResponseBody
@@ -65,7 +69,8 @@ public class ArticleController {
         return new ResponseEntity<>(updatedArticle.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @GetMapping("/articles/filtered")
-    public ResponseEntity<?> getFiltered(@RequestParam @Valid FilterDTO filters) {
+    public ResponseEntity<?> getFiltered(FilterDTO filterdto) {
+        ArticleFilter filters = filterMapper.toArticleFilter(filterdto);
         Result<List<Article>, String> filteredArticles = articleService.getFiltered(filters);
         if(filteredArticles instanceof Success<List<Article>, String>) {
             List<ArticleDTO> filteredArticlesDTO = filteredArticles.getValue().stream().map(article -> mapper.toDto(article)).toList();
