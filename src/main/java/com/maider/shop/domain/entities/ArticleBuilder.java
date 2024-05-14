@@ -32,4 +32,12 @@ public class ArticleBuilder {
     public Article build () {
         return new Article(this.type, this.size, this.material, this.brand, this.price);
     }
+    public ArticleBuilder from (Article article) {
+        this.price = article.getPrice();
+        this.brand = article.getBrand();
+        this.size = article.getSize_();
+        this.type = article.getType();
+        this.material = article.getMaterial();
+        return this;
+    }
 }

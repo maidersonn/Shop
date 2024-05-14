@@ -1,4 +1,4 @@
-package com.maider.shop.domain.services;
+package com.maider.shop.infrastructure;
 
 import com.maider.shop.domain.entities.Article;
 import jakarta.persistence.criteria.CriteriaBuilder;

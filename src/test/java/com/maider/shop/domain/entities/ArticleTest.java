@@ -1,4 +1,4 @@
-package com.maider.shop.entities;
+package com.maider.shop.domain.entities;
 
 import com.maider.shop.domain.entities.Article;
 import org.junit.jupiter.api.Test;

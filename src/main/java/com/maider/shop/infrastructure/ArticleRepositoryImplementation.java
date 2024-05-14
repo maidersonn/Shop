@@ -3,12 +3,13 @@ package com.maider.shop.infrastructure;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
 import com.maider.shop.domain.repositories.ArticleRepository;
-import com.maider.shop.domain.services.ArticleSpecifications;
+import com.maider.shop.result.JpaArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-public class ArticleRepositoryImplementation implements ArticleRepository{
+@Repository
+public class ArticleRepositoryImplementation implements ArticleRepository {
 
     @Autowired
     private JpaArticleRepository jpaRepo;
@@ -24,4 +25,15 @@ public class ArticleRepositoryImplementation implements ArticleRepository{
                 filters.getPriceGreaterThan());
         return jpaRepo.findAll(specs);
     }
+    @Override
+    public Article save(Article article) { return jpaRepo.save(article);}
+    @Override
+    public List<Article> findAll() { return jpaRepo.findAll();}
+    @Override
+    public void deleteById(Long id) {jpaRepo.deleteById(id);}
+    @Override
+    public Boolean existsById(Long id) { return jpaRepo.existsById(id);}
+
+    @Override
+    public Article getReferenceById(Long id) { return jpaRepo.getReferenceById(id);}
 }

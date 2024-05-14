@@ -1,15 +1,16 @@
 package com.maider.shop.domain.services;
 
-import com.maider.shop.controllers.dto.FilterDTO;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
 import com.maider.shop.domain.repositories.ArticleRepository;
 import com.maider.shop.result.Failure;
 import com.maider.shop.result.Result;
 import com.maider.shop.result.Success;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Array;
 import java.util.List;
 
 @Service
@@ -70,12 +71,14 @@ public class ArticleService {
 
     }
 
-    public Result<Article, String> getById(Long id) {
+    public Result<Article, String[]> getById(Long id) {
         try {
             Article article = articleRepository.getReferenceById(id);
             return new Success<>(article);
+        } catch (EntityNotFoundException e) {
+            return new Failure<>(new String[] {"400", "Article not found"});
         } catch (Exception e) {
-            return new Failure<>("Error getting article");
+            return new Failure<>(new String[]{"500", "Error getting article"});
         }
     }
 }
