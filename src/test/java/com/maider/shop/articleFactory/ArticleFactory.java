@@ -1,4 +1,4 @@
-package com.maider.shop.domain.repositories;
+package com.maider.shop.articleFactory;
 
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleBuilder;

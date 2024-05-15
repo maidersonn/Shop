@@ -1,5 +1,6 @@
 package com.maider.shop.domain.repositories;
 
+import com.maider.shop.articleFactory.ArticleFactory;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleBuilder;
 import com.maider.shop.domain.entities.ArticleFilter;

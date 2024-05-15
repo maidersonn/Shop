@@ -4,6 +4,7 @@ import com.maider.shop.controllers.dto.FilterDTO;
 import com.maider.shop.controllers.mapper.ArticleFilterMapper;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
+import com.maider.shop.domain.services.errors.ArticleError;
 import com.maider.shop.result.Failure;
 import com.maider.shop.result.Result;
 import com.maider.shop.result.Success;
@@ -81,11 +82,11 @@ public class ArticleController {
     }
     @GetMapping("article/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Result<Article, String[]> article = articleService.getById(id);
-        if(article instanceof Success<Article, String[]>) {
+        Result<Article, ArticleError> article = articleService.getById(id);
+        if (article instanceof Success<Article, ArticleError>) {
             ArticleDTO articleDTO = mapper.toDto(article.getValue());
             return new ResponseEntity<>(articleDTO, HttpStatus.OK);
         }
-        return new ResponseEntity<>(article.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(article.getError().getMessage(), HttpStatus.NOT_FOUND);
     }
 }

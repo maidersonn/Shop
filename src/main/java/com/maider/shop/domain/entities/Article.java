@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 @Entity
 public class Article {
     @Id
@@ -12,6 +14,13 @@ public class Article {
     private Long id;
     private String type;
     private int size_;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return size_ == article.size_ && Double.compare(article.price, price) == 0 && Objects.equals(id, article.id) && Objects.equals(type, article.type) && Objects.equals(material, article.material) && Objects.equals(brand, article.brand);
+    }
     private String material;
     private String brand;
     private double price;

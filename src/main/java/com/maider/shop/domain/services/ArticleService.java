@@ -3,6 +3,8 @@ package com.maider.shop.domain.services;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
 import com.maider.shop.domain.repositories.ArticleRepository;
+import com.maider.shop.domain.services.errors.ArticleError;
+import com.maider.shop.domain.services.errors.ArticleNotFoundError;
 import com.maider.shop.result.Failure;
 import com.maider.shop.result.Result;
 import com.maider.shop.result.Success;
@@ -71,14 +73,12 @@ public class ArticleService {
 
     }
 
-    public Result<Article, String[]> getById(Long id) {
+    public Result<Article, ArticleError> getById(Long id) {
         try {
             Article article = articleRepository.getReferenceById(id);
             return new Success<>(article);
         } catch (EntityNotFoundException e) {
-            return new Failure<>(new String[] {"400", "Article not found"});
-        } catch (Exception e) {
-            return new Failure<>(new String[]{"500", "Error getting article"});
+            return new Failure<>(new ArticleNotFoundError("Article not found"));
         }
     }
 }
