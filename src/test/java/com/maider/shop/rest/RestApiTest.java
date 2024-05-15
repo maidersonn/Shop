@@ -13,6 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.w3c.dom.Entity;
 
 import java.util.List;
@@ -53,12 +56,17 @@ public class RestApiTest {
         List<Article> articles = ArticleFactory.create(2);
         Mockito.when(articleRepository.findAll()).thenReturn(articles);
 
-        List<ArticleDTO> response = this.restTemplate.getForObject("http://localhost:" + port + "/articles", List.class);
+        List<ArticleDTO> response = this.restTemplate
+                .exchange("http://localhost:" + port + "/articles",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<ArticleDTO>>() {})
+                .getBody();
 
         assertNotNull(response);
         assertEquals(2, response.size());
-       // assertEquals("Lewis", response.get(0).getBrand());
-       // assertInstanceOf(ArticleDTO, response.get(0));
+        assertEquals("Lewis", response.get(0).getBrand());
+        response.forEach((element) -> assertInstanceOf(ArticleDTO.class, element));
     }
     @Test
     void shouldReturnArticleDTOForGetByIdEndpoint() {
