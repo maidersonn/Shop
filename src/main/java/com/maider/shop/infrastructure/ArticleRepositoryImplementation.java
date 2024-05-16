@@ -3,13 +3,12 @@ package com.maider.shop.infrastructure;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
 import com.maider.shop.domain.repositories.ArticleRepository;
-import com.maider.shop.result.JpaArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public class ArticleRepositoryImplementation implements ArticleRepository {
+public class ArticleRepositoryImplementation implements ArticleRepository{
 
     @Autowired
     private JpaArticleRepository jpaRepo;

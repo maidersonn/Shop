@@ -4,6 +4,7 @@ import com.maider.shop.articleFactory.ArticleFactory;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleBuilder;
 import com.maider.shop.domain.entities.ArticleFilter;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,9 +23,10 @@ class ArticleRepositoryTest {
     @Autowired
     private ArticleRepository articleRepository;
 
-    /**
-     *  Limpiar bbdd en cada test
-     */
+    @AfterEach
+    void clearDataBase() {
+        jparepo.deleteAll();
+    }
     @Test
     void shouldSaveAnArticle() {
         Article article = ArticleFactory.createOne();

@@ -1,4 +1,4 @@
-package com.maider.shop.result;
+package com.maider.shop.infrastructure;
 
 import com.maider.shop.domain.entities.Article;
 import org.springframework.data.jpa.repository.JpaRepository;

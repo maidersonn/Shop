@@ -51,4 +51,19 @@ public class Article {
     public double getPrice() {
         return price;
     }
+    public void setType(String type) {
+        this.type = type;
+    }
+    public void setSize_(int size_) {
+        this.size_ = size_;
+    }
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
