@@ -131,4 +131,26 @@ public class RestApiTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(52, response.getBody().getPrice());
     }
+    @Test
+    void shouldReturnFilteredList() {
+        ArticleBuilder builder = new ArticleBuilder();
+        List<Article> articles = new ArrayList<>();
+        articles.add(builder.withBrand("Lewis").withPrice(80).withSize(38).withMaterial("leather").withType("trousers").build()) ;
+        articles.add(builder.withBrand("Lewis").withPrice(60).withSize(39).withMaterial("leather").withType("trousers").build());
+
+        FilterDTO filterDTO = new FilterDTO("trousers", 39, null, "leather", "Lewis", 80.0, null);
+        ArticleFilter articleFilter = new ArticleFilter("trousers", 39, null, "leather", "Lewis", 80.0, null);
+        Mockito.when(articleRepository.filter(articleFilter)).thenReturn(articles);
+
+        List<ArticleDTO> response = this.restTemplate
+                .exchange("http://localhost:" + port + "/articles/filtered",
+                        HttpMethod.GET,
+                        new HttpEntity<>(filterDTO),
+                        new ParameterizedTypeReference<List<ArticleDTO>>() {})
+                .getBody();
+
+        assertEquals(2, response.size());
+        //assertEquals();
+
+    }
 }
