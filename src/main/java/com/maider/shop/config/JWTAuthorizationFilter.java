@@ -20,7 +20,7 @@ import static com.maider.shop.config.Constants.*;
 
 @Component
 public class JWTAuthorizationFilter  extends OncePerRequestFilter {
-    @Value("super.secret.key")
+    @Value("${secret.key}")
     String secretKey;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

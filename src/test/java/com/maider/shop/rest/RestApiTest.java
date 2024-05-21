@@ -1,9 +1,9 @@
 package com.maider.shop.rest;
 
 import com.maider.shop.articleFactory.ArticleFactory;
+import com.maider.shop.config.JWTAuthenticationConfig;
 import com.maider.shop.controllers.dto.ArticleCreationDTO;
 import com.maider.shop.controllers.dto.ArticleDTO;
-import com.maider.shop.controllers.dto.FilterDTO;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleBuilder;
 import com.maider.shop.domain.entities.ArticleFilter;
@@ -11,7 +11,6 @@ import com.maider.shop.domain.repositories.ArticleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,14 +22,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
-import static org.aspectj.util.LangUtil.isEmpty;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.isNotNull;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,12 +35,15 @@ public class RestApiTest {
     JpaRepository jpaRepository;
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private JWTAuthenticationConfig jwtAuthenticationConfig;
     @MockBean
     private ArticleRepository articleRepository;
     @AfterEach
     void clearDataBase() {
         jpaRepository.deleteAll();
     }
+
     @Test
     void shouldReturnArticleDTOForCreateEndpoint() {
         ArticleCreationDTO  creationDto= new ArticleCreationDTO("trousers", "leather", "Lewis", 40, 80.0);
@@ -109,10 +106,14 @@ public class RestApiTest {
     void shouldReturnResponseEntityForDeleteEndpoint() {
         Article article = ArticleFactory.createOne();
         article.setId(1L);
+        String token = jwtAuthenticationConfig.getJWTToken("maidersonn");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<?> request = new HttpEntity<>(null, headers);
 
         doAnswer(invocation -> null).when(articleRepository).deleteById(1L);
 
-        ResponseEntity<?> response = this.restTemplate.exchange("http://localhost:" + port + "/article/1", HttpMethod.DELETE, null, ResponseEntity.class);
+        ResponseEntity<?> response = this.restTemplate.exchange("http://localhost:" + port + "/article/1", HttpMethod.DELETE, request, ResponseEntity.class);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
@@ -125,27 +126,27 @@ public class RestApiTest {
         Mockito.when(articleRepository.existsById(1L)).thenReturn(true);
         Mockito.when(articleRepository.save(articleToUpdate)).thenReturn(articleToUpdate);
 
+
         ResponseEntity<ArticleDTO> response = this.restTemplate.exchange("http://localhost:" + port + "/article/1", HttpMethod.PUT, new HttpEntity<>(articleCreation), ArticleDTO.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(52, response.getBody().getPrice());
     }
-    @Test
+   @Test
     void shouldReturnFilteredList() {
         ArticleBuilder builder = new ArticleBuilder();
         List<Article> articles = new ArrayList<>();
         articles.add(builder.withBrand("Lewis").withPrice(80).withSize(38).withMaterial("leather").withType("trousers").build()) ;
         articles.add(builder.withBrand("Lewis").withPrice(60).withSize(39).withMaterial("leather").withType("trousers").build());
 
-        FilterDTO filterDTO = new FilterDTO("trousers", 39, null, "leather", "Lewis", 80.0, null);
         ArticleFilter articleFilter = new ArticleFilter("trousers", 39, null, "leather", "Lewis", 80.0, null);
         Mockito.when(articleRepository.filter(articleFilter)).thenReturn(articles);
 
         List<ArticleDTO> response = this.restTemplate
-                .exchange("http://localhost:" + port + "/articles/filtered",
+                .exchange("http://localhost:" + port + "/articles/filtered?type=trousers&sizeLessThan=39&material=leather&brand=Lewis&priceLessThan=80.0",
                         HttpMethod.GET,
-                        new HttpEntity<>(filterDTO),
+                        null,
                         new ParameterizedTypeReference<List<ArticleDTO>>() {})
                 .getBody();
 

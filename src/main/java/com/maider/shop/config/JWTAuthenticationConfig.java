@@ -15,7 +15,7 @@ import static com.maider.shop.config.Constants.*;
 
 @Configuration
 public class JWTAuthenticationConfig {
-    @Value("super.secret.key")
+    @Value("${secret.key}")
     private String secretKey;
     public String getJWTToken(String username) {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
