@@ -1,5 +1,7 @@
 package com.maider.shop.domain.entities;
 
+import java.util.Objects;
+
 public class ArticleFilter {
     private String type;
     private Integer sizeLessThan;
@@ -17,6 +19,14 @@ public class ArticleFilter {
         this.brand = brand;
         this.priceLessThan = priceLessThan;
         this.priceGreaterThan = priceGreaterThan;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArticleFilter that = (ArticleFilter) o;
+        return Objects.equals(type, that.type) && Objects.equals(sizeLessThan, that.sizeLessThan) && Objects.equals(sizeGreaterThan, that.sizeGreaterThan) && Objects.equals(material, that.material) && Objects.equals(brand, that.brand) && Objects.equals(priceLessThan, that.priceLessThan) && Objects.equals(priceGreaterThan, that.priceGreaterThan);
     }
 
     public String getType() {
