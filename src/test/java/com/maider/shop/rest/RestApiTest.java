@@ -50,10 +50,14 @@ public class RestApiTest {
         Article article = ArticleFactory.createOne();
         Article articleReturned = ArticleFactory.createOne();
         articleReturned.setId(1L);
+        String token = jwtAuthenticationConfig.getJWTToken("maidersonn");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<?> request = new HttpEntity<>(creationDto, headers);
 
         Mockito.when(articleRepository.save(article)).thenReturn(articleReturned);
 
-        ArticleDTO response = this.restTemplate.postForEntity("http://localhost:" + port + "/article", creationDto, ArticleDTO.class).getBody();
+        ArticleDTO response = this.restTemplate.postForEntity("http://localhost:" + port + "/article", request, ArticleDTO.class).getBody();
 
         assertNotNull(response);
         assertEquals("leathertrousers", response.getName());
@@ -123,11 +127,15 @@ public class RestApiTest {
         Article articleToUpdate = ArticleFactory.createOne();
         articleToUpdate.setId(1L);
         articleToUpdate.setPrice(52);
+        String token = jwtAuthenticationConfig.getJWTToken("maidersonn");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<?> request = new HttpEntity<>(articleCreation, headers);
         Mockito.when(articleRepository.existsById(1L)).thenReturn(true);
         Mockito.when(articleRepository.save(articleToUpdate)).thenReturn(articleToUpdate);
 
 
-        ResponseEntity<ArticleDTO> response = this.restTemplate.exchange("http://localhost:" + port + "/article/1", HttpMethod.PUT, new HttpEntity<>(articleCreation), ArticleDTO.class);
+        ResponseEntity<ArticleDTO> response = this.restTemplate.exchange("http://localhost:" + port + "/article/1", HttpMethod.PUT, request, ArticleDTO.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
