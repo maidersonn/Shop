@@ -1,6 +1,6 @@
 package com.maider.shop.security;
 
-import com.maider.shop.infrastructure.services.UserDetailsServiceImpl;
+import com.maider.shop.domain.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJWT unauthorizedHandler;
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    UserService userDetailsService;
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

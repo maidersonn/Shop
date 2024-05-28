@@ -1,10 +1,10 @@
-package com.maider.shop.infrastructure.services;
+package com.maider.shop.domain.services;
 
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
 import com.maider.shop.domain.repositories.ArticleRepository;
-import com.maider.shop.infrastructure.services.errors.ShopError;
-import com.maider.shop.infrastructure.services.errors.ArticleNotFoundError;
+import com.maider.shop.domain.services.errors.ShopError;
+import com.maider.shop.domain.services.errors.ArticleNotFoundError;
 import com.maider.shop.result.Failure;
 import com.maider.shop.result.Result;
 import com.maider.shop.result.Success;

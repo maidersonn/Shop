@@ -1,4 +1,4 @@
-package com.maider.shop.infrastructure.services.errors;
+package com.maider.shop.domain.services.errors;
 
 public class UserNotFoundError implements ShopError {
     private String message;
