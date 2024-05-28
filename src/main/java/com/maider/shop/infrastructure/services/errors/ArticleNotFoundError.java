@@ -1,6 +1,6 @@
-package com.maider.shop.domain.services.errors;
+package com.maider.shop.infrastructure.services.errors;
 
-public class ArticleNotFoundError implements ArticleError {
+public class ArticleNotFoundError implements ShopError {
 
     private String message;
 

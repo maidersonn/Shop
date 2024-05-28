@@ -1,10 +1,10 @@
-package com.maider.shop.domain.services;
+package com.maider.shop.infrastructure.services;
 
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
 import com.maider.shop.domain.repositories.ArticleRepository;
-import com.maider.shop.domain.services.errors.ArticleError;
-import com.maider.shop.domain.services.errors.ArticleNotFoundError;
+import com.maider.shop.infrastructure.services.errors.ShopError;
+import com.maider.shop.infrastructure.services.errors.ArticleNotFoundError;
 import com.maider.shop.result.Failure;
 import com.maider.shop.result.Result;
 import com.maider.shop.result.Success;
@@ -12,7 +12,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.List;
 
 @Service
@@ -73,7 +72,7 @@ public class ArticleService {
 
     }
 
-    public Result<Article, ArticleError> getById(Long id) {
+    public Result<Article, ShopError> getById(Long id) {
         try {
             Article article = articleRepository.getReferenceById(id);
             return new Success<>(article);

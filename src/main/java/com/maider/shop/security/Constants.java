@@ -1,4 +1,4 @@
-package com.maider.shop.config;
+package com.maider.shop.security;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

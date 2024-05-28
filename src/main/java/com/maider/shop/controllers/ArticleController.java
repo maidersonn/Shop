@@ -4,11 +4,10 @@ import com.maider.shop.controllers.dto.FilterDTO;
 import com.maider.shop.controllers.mapper.ArticleFilterMapper;
 import com.maider.shop.domain.entities.Article;
 import com.maider.shop.domain.entities.ArticleFilter;
-import com.maider.shop.domain.services.errors.ArticleError;
-import com.maider.shop.result.Failure;
+import com.maider.shop.infrastructure.services.errors.ShopError;
 import com.maider.shop.result.Result;
 import com.maider.shop.result.Success;
-import com.maider.shop.domain.services.ArticleService;
+import com.maider.shop.infrastructure.services.ArticleService;
 import com.maider.shop.controllers.dto.ArticleDTO;
 import com.maider.shop.controllers.dto.ArticleCreationDTO;
 import com.maider.shop.controllers.mapper.ArticleMapper;
@@ -25,8 +24,6 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
     @Autowired
-    private ArticleMapper mapper;
-    @Autowired
     private ArticleFilterMapper filterMapper;
 
     @GetMapping("/articles")
@@ -35,7 +32,7 @@ public class ArticleController {
         Result<List<Article>, String> articles = articleService.getAll();
         if(articles instanceof Success<?,?>) {
             List<Article> articlesList = articles.getValue();
-            List<ArticleDTO> articleDTOList = articlesList.stream().map(article -> mapper.toDto(article)).toList();
+            List<ArticleDTO> articleDTOList = articlesList.stream().map(ArticleMapper::toDto).toList();
             return new ResponseEntity<>(articleDTOList,  HttpStatus.OK);
         }
         return new ResponseEntity<>(articles.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,10 +40,10 @@ public class ArticleController {
     @PostMapping("/article")
     @ResponseBody
     public ResponseEntity<?> create(@RequestBody @Valid ArticleCreationDTO articleDTO) {
-        Article newArticle = mapper.toArticle(articleDTO);
+        Article newArticle = ArticleMapper.toArticle(articleDTO);
         Result<Article, String> article = articleService.save(newArticle);
         if (article instanceof Success<Article, String>) {
-            ArticleDTO newArticleDTO = mapper.toDto(article.getValue());
+            ArticleDTO newArticleDTO = ArticleMapper.toDto(article.getValue());
             return new ResponseEntity<>(newArticleDTO, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(article.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -62,10 +59,10 @@ public class ArticleController {
     @PutMapping("/article/{id}")
     public ResponseEntity<?> update(@RequestBody @Valid ArticleCreationDTO  articleDTO,
                                     @PathVariable Long id) {
-        Article articleToUpdate = mapper.toArticle(articleDTO);
+        Article articleToUpdate = ArticleMapper.toArticle(articleDTO);
         Result<Article, String> updatedArticle = articleService.updateById(id, articleToUpdate);
         if (updatedArticle instanceof Success<Article, String>) {
-            ArticleDTO updatedArticleDTO = mapper.toDto(updatedArticle.getValue());
+            ArticleDTO updatedArticleDTO = ArticleMapper.toDto(updatedArticle.getValue());
             return new ResponseEntity<>(updatedArticleDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(updatedArticle.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -75,16 +72,16 @@ public class ArticleController {
         ArticleFilter filters = filterMapper.toArticleFilter(filterdto);
         Result<List<Article>, String> filteredArticles = articleService.getFiltered(filters);
         if(filteredArticles instanceof Success<List<Article>, String>) {
-            List<ArticleDTO> filteredArticlesDTO = filteredArticles.getValue().stream().map(article -> mapper.toDto(article)).toList();
+            List<ArticleDTO> filteredArticlesDTO = filteredArticles.getValue().stream().map(ArticleMapper::toDto).toList();
             return new ResponseEntity<>(filteredArticlesDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(filteredArticles.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @GetMapping("article/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Result<Article, ArticleError> article = articleService.getById(id);
-        if (article instanceof Success<Article, ArticleError>) {
-            ArticleDTO articleDTO = mapper.toDto(article.getValue());
+        Result<Article, ShopError> article = articleService.getById(id);
+        if (article instanceof Success<Article, ShopError>) {
+            ArticleDTO articleDTO = ArticleMapper.toDto(article.getValue());
             return new ResponseEntity<>(articleDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(article.getError().getMessage(), HttpStatus.NOT_FOUND);

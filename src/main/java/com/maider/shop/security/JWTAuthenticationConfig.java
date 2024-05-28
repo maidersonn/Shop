@@ -1,4 +1,4 @@
-package com.maider.shop.config;
+package com.maider.shop.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.maider.shop.config.Constants.*;
+import static com.maider.shop.security.Constants.*;
 
 @Configuration
 public class JWTAuthenticationConfig {

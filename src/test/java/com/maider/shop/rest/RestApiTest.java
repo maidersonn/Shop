@@ -1,7 +1,7 @@
 package com.maider.shop.rest;
 
 import com.maider.shop.articleFactory.ArticleFactory;
-import com.maider.shop.config.JWTAuthenticationConfig;
+import com.maider.shop.security.JWTAuthenticationConfig;
 import com.maider.shop.controllers.dto.ArticleCreationDTO;
 import com.maider.shop.controllers.dto.ArticleDTO;
 import com.maider.shop.domain.entities.Article;
