@@ -4,6 +4,7 @@ import com.maider.shop.controllers.dto.UserCrationDTO;
 import com.maider.shop.controllers.dto.UserDTO;
 import com.maider.shop.controllers.mapper.UserMapper;
 import com.maider.shop.domain.entities.User;
+import com.maider.shop.domain.services.UserDetailsServiceImpl;
 import com.maider.shop.domain.services.UserService;
 import com.maider.shop.result.Result;
 import com.maider.shop.result.Success;
